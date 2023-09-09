@@ -2,7 +2,8 @@
 import java.util.*;
 class September_23{
     public static void main(String[] args) {
-        System.out.println();
+        // System.out.println();
+        System.out.println(combinationSum4(new int[] { 2,1,3 }, 35));
     }
 
     //! 6/9/23
@@ -148,4 +149,56 @@ class September_23{
         return getem1(mainLst,index+1,numRows);
     }
 
+    ////********************************************************************************************************* */
+    //!9/9/23
+    // Non DP Approach (not good for higher target)
+    static int count = 0;
+    static int combinationSum4(int[] nums, int target) {
+        for(int i=0;i<nums.length;i++){
+            getem(nums,target,0+nums[i]);
+        }
+        return count;
+    }
+
+    static void getem(int[] nums, int target, int sum) {
+        if (sum > target) {
+            return;
+        }
+
+        if (sum == target) {
+            count++;
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            getem(nums, target, nums[i] + sum);
+        }
+    }
+    
+    // the love babbar Approach
+
+    public int combinationSum4_BetterApproach(int[] nums, int target) {
+       int[] dp = new int[target+1];
+       Arrays.fill(dp,-1);
+       dp[0] = 1;
+       return getem(nums,target,dp);
+    //    return dp[target-1];
+    }
+
+    public int getem(int[] nums, int target,int[] dp) {
+        if(target==0){
+            return 1;
+        }
+        if(target<0){
+            return 0;
+        }
+        if(dp[target]!=-1){
+            return dp[target];
+        }
+        int ans = 0;
+        for(int i:nums){
+            ans += getem(nums,target-i,dp);
+        }
+        dp[target] = ans;
+        return dp[target];
+    }
 }
