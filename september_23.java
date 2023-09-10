@@ -201,4 +201,19 @@ class September_23{
         dp[target] = ans;
         return dp[target];
     }
+
+    ////********************************************************************************************************* */
+    //!10/9/23
+    // refeered this video best soln (https://www.youtube.com/watch?v=p1tvA-eQFqk)
+    public int countOrders(int n) {
+        int mod = (int) Math.pow(10,9)+7;
+        long[] dp = new long[501];
+        dp[1]=1L;
+        dp[2]=6L;
+        for(int i=3;i<=n;i++){
+            int getfirstpossiblecombo = 2*i-1;
+            dp[i] = ((dp[i-1]*(getfirstpossiblecombo+1)*getfirstpossiblecombo)/2)%mod;
+        }
+        return (int) dp[n];
+    }
 }
