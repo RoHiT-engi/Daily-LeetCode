@@ -181,7 +181,6 @@ class September_23{
        Arrays.fill(dp,-1);
        dp[0] = 1;
        return getem(nums,target,dp);
-    //    return dp[target-1];
     }
 
     public int getem(int[] nums, int target,int[] dp) {
@@ -216,4 +215,28 @@ class September_23{
         }
         return (int) dp[n];
     }
+
+    ////********************************************************************************************************* */
+    //!11/9/23
+    // why this is even considered as mid lvl prblm ?
+    public List<List<Integer>> groupThePeople(int[] arr) {
+        HashMap<Integer,List<Integer>> hash = new HashMap<>();
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i=0;i<arr.length;i++){
+            List<Integer> lst = hash.getOrDefault(arr[i],new ArrayList<>());
+            if(arr[i]==lst.size()){
+                res.add(lst);
+                lst = new ArrayList<>();
+            }
+            lst.add(i);
+            hash.put(arr[i],lst);
+        }
+
+        for(Integer i:hash.keySet()){
+            res.add(hash.get(i));
+        }
+        return res;
+    }
+
+    
 }
