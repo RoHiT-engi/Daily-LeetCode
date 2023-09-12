@@ -238,5 +238,34 @@ class September_23{
         return res;
     }
 
+    ////********************************************************************************************************* */
+    //!12/9/23
+    public int minDeletions(String s) {
+        int max = 0;
+        HashMap<Character,Integer> hash = new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            int x = hash.getOrDefault(s.charAt(i),0)+1;
+            max = Math.max(max,x);
+            hash.put(s.charAt(i),x);
+        }
+        int tutsum = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for(Character c:hash.keySet()){
+            if(set.contains(hash.get(c))){
+                int val = hash.get(c)-1;
+                while(set.contains(val)){
+                    val--;
+                }
+                set.add(val);
+            }
+            set.add(hash.get(c));
+        }
+        for(Integer i:set){
+            if(i>0){
+            tutsum+=i;}
+        }
+        // System.out.println(hash+" "+s.length()+" "+tutsum+" "+set);
+        return s.length()-tutsum;
+    }
     
 }
