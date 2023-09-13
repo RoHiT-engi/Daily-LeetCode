@@ -267,5 +267,35 @@ class September_23{
         // System.out.println(hash+" "+s.length()+" "+tutsum+" "+set);
         return s.length()-tutsum;
     }
+    ////********************************************************************************************************* */
+    //!13/9/23
+    // did greedy approach but poor implementation 
+    // https://www.youtube.com/watch?v=h6_lIwZYHQw (good approach)
+    public int candy(int[] ratings) {
+        if(ratings.length==1){
+            return 1;
+        }
+        int[] resL = new int[ratings.length];
+        int[] resR = new int[ratings.length];
+        Arrays.fill(resL,1);
+        Arrays.fill(resR,1);
+
+        for(int i=1;i<ratings.length;i++){
+            if(ratings[i]>ratings[i-1]){
+                resL[i]=resL[i-1]+1;
+            }
+        }
+         for(int i=ratings.length-1;i>=1;i--){
+            if(ratings[i]<ratings[i-1]){
+                resR[i-1]=resR[i]+1;
+            }
+        }
+        int sum =0;
+        for(int i=0;i<ratings.length;i++){
+            sum+=Math.max(resR[i],resL[i]);
+            // System.out.println(Math.max(resR[i],resL[i]));
+        }
+        return sum;
+    }
     
 }
