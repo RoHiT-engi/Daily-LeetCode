@@ -297,5 +297,41 @@ class September_23{
         }
         return sum;
     }
+    ////********************************************************************************************************* */
+    //!14/9/23
+    // Note: Choosing proper dS is imp 
+    // Attempted without Stack but too much complex
+    public List<String> findItinerary(List<List<String>> tickets) {
+        HashMap<String,PriorityQueue<String>> hash = new HashMap<>();
+        for(List<String> i:tickets){
+            PriorityQueue<String> lst = hash.getOrDefault(i.get(0),new PriorityQueue<String>());
+            lst.add(i.get(1));
+            hash.put(i.get(0),lst);
+        }
+        List<String> res = new ArrayList<>();
+        Stack<String> stk = new Stack<>();
+        stk.push("JFK");
+        // System.out.println(hash);
+        while(!stk.empty()){
+            // System.out.println(stk+" stack");
+            // System.out.println(hash);
+            String val = stk.peek();
+            if(hash.containsKey(stk.peek())){
+                PriorityQueue<String> maps = hash.get(stk.peek());
+                // System.out.println(maps.isEmpty()+" "+maps);
+                if(maps.isEmpty()){
+                    res.add(stk.pop());
+                    continue;
+                }
+                // System.out.println(val);
+                stk.push(maps.poll());
+                hash.put(val,maps);
+            }else{
+                res.add(stk.pop());
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
     
 }
