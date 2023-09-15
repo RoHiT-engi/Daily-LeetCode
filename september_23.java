@@ -333,5 +333,39 @@ class September_23{
         Collections.reverse(res);
         return res;
     }
+    ////********************************************************************************************************* */
+    //!15/9/23
+    // prims Algo to find minimum spanning tree in graph
+    // for this question -->
+    // 1. check all connected nodes to prime node find (start,end,cost)
+    // 2. add them to priorty queue
+    // 3. get least cost node which is not in checked hashSet add it to priorty
+    // 4. poll the pq and get prime node and repeat
+    // (https://www.youtube.com/watch?v=rnYBi9N_vw4&t=815s&pp=ygUQcHJpbSdzIGFsZ29yaXRobQ%3D%3D)
+    public int minCostConnectPoints(int[][] points) {
+        HashSet<Integer> hash = new HashSet<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((x,y) -> x[2] - y[2]);
+        pq.add(new int[]{0,0,0});
+        int count = 0;
+        while(hash.size()<points.length && !pq.isEmpty()){
+            int[] elem = pq.poll();
+            // System.out.println(Arrays.toString(elem));
+            int end = elem[1];
+            int cost = elem[2];
+            if(hash.contains(end)){
+                continue;
+            }
+            hash.add(elem[0]);
+            count+=cost;
+            // pq.clear();
+            for(int i=0;i<points.length;i++){
+                if(!hash.contains(i)){
+                    pq.offer(new int[]{end,i,Math.abs(points[end][0]-points[i][0])+
+                    Math.abs(points[end][1]-points[i][1])});
+                }
+            }
+        }
+        return count;
+    }
     
 }
