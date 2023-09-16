@@ -344,28 +344,132 @@ class September_23{
     // (https://www.youtube.com/watch?v=rnYBi9N_vw4&t=815s&pp=ygUQcHJpbSdzIGFsZ29yaXRobQ%3D%3D)
     public int minCostConnectPoints(int[][] points) {
         HashSet<Integer> hash = new HashSet<>();
-        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((x,y) -> x[2] - y[2]);
-        pq.add(new int[]{0,0,0});
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((x, y) -> x[2] - y[2]);
+        pq.add(new int[] { 0, 0, 0 });
         int count = 0;
-        while(hash.size()<points.length && !pq.isEmpty()){
+        while (hash.size() < points.length && !pq.isEmpty()) {
             int[] elem = pq.poll();
             // System.out.println(Arrays.toString(elem));
             int end = elem[1];
             int cost = elem[2];
-            if(hash.contains(end)){
+            if (hash.contains(end)) {
                 continue;
             }
             hash.add(elem[0]);
-            count+=cost;
+            count += cost;
             // pq.clear();
-            for(int i=0;i<points.length;i++){
-                if(!hash.contains(i)){
-                    pq.offer(new int[]{end,i,Math.abs(points[end][0]-points[i][0])+
-                    Math.abs(points[end][1]-points[i][1])});
+            for (int i = 0; i < points.length; i++) {
+                if (!hash.contains(i)) {
+                    pq.offer(new int[] { end, i, Math.abs(points[end][0] - points[i][0]) +
+                            Math.abs(points[end][1] - points[i][1]) });
                 }
             }
         }
         return count;
     }
+    ////********************************************************************************************************* */
+    //!16/9/23
+    // using Dijkstra's Algorithm (hint:- min efforts path/ lesscost path / best effi path )
+    public int minimumEffortPath_Dijkstra(int[][] arr) {
+        if (arr.length == 1) {
+            int max = Integer.MIN_VALUE;
+            for (int[] i : arr) {
+                for (int j = 1; j < i.length; j++) {
+                    max = Math.max(max, Math.abs(i[j - 1] - i[j]));
+                }
+            }
+            return max == Integer.MIN_VALUE ? 0 : max;
+        }
+        int[][] temp = new int[arr.length][arr[0].length];
+        for (int[] row : temp) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        // System.out.println((y+1)+" "+arr[0].length+" "+x);
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((x, y) -> x[0] - y[0]);
+        pq.add(new int[] { 0, 0, 0 });
+        int dr[] = { -1, 0, 1, 0 };
+        int dc[] = { 0, 1, 0, -1 };
+        int n = arr.length;
+        int m = arr[0].length;
+        while (!pq.isEmpty()) {
+            int[] it = pq.poll();
+            int diff = it[0];
+            int r = it[1];
+            int c = it[2];
+            for (int i = 0; i < 4; i++) {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+                if (nr >= 0 && nr < n && nc >= 0 && nc < m) {
+                    int newEffort = Math.max(Math.abs(arr[r][c] - arr[nr][nc]), diff);
+                    if (newEffort < temp[nr][nc]) {
+                        temp[nr][nc] = newEffort;
+                        pq.add(new int[] { newEffort, nr, nc });
+                    }
+                }
+            }
+        }
+        return temp[arr.length - 1][arr[0].length - 1];
+    }
+    
+    // Using Binary Search (best soln)
+    private boolean[][] visited;  // Visited cells tracker
+    private int[] directions_x = {0, 1, -1, 0};  // Changes in x coordinate for four directions
+    private int[] directions_y = {1, 0, 0, -1};  // Changes in y coordinate for four directions
+    private int numRows, numCols;  // Number of rows and columns in the matrix
+
+    private void dfs_binarySearch(int x, int y, int limitEffort, int[][] heights) {
+        if (visited[x][y])
+            return;
+        visited[x][y] = true;
+
+        // Stop if we've reached the bottom-right cell
+        if (x == numRows - 1 && y == numCols - 1)
+            return;
+
+        // Explore each direction (up, down, left, right)
+        for (int i = 0; i < 4; i++) {
+            int new_x = x + directions_x[i];
+            int new_y = y + directions_y[i];
+
+            // Check if the new coordinates are within bounds
+            if (new_x < 0 || new_x >= numRows || new_y < 0 || new_y >= numCols)
+                continue;
+
+            // Go to next cell if the effort is within limit
+            int newEffort = Math.abs(heights[x][y] - heights[new_x][new_y]);
+            if (newEffort <= limitEffort)
+                dfs_binarySearch(new_x, new_y, limitEffort, heights);
+        }
+    }
+
+    public int minimumEffortPath(int[][] heights) {
+        numRows = heights.length;
+        numCols = heights[0].length;
+
+        // Initialize visited array
+        visited = new boolean[numRows][numCols];
+
+        // Bound for our binary search
+        int lowerLimit = 0, upperLimit = 1_000_000;
+
+        while (lowerLimit < upperLimit) {
+            int mid = (upperLimit + lowerLimit) / 2;
+            for (boolean[] row : visited) {
+                Arrays.fill(row, false);
+            }
+
+            dfs_binarySearch(0, 0, mid, heights);
+
+            if (visited[numRows - 1][numCols - 1])
+                upperLimit = mid;
+            else
+                lowerLimit = mid + 1;
+        }
+
+        return lowerLimit;
+    }
+
+
     
 }
