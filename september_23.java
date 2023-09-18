@@ -507,5 +507,39 @@ class September_23{
     
     ////********************************************************************************************************* */
     //!18/9/23
-    
+    class BruhComparator implements Comparator<int[]> {
+    // override the compare() method
+    public int compare(int[] l1, int[] l2)
+    {
+        if (l1[1] == l2[1]) {
+            return 0;
+        }
+        else if (l1[1] > l2[1]) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
+    }
+    public int[] kWeakestRows(int[][] mat, int k) {
+        ArrayList<int[]> lst = new ArrayList<>();
+        int[] res= new int[k];
+        for(int i=0;i<mat.length;i++){
+            int count = 0;
+            for(int j:mat[i]){
+                if(j==1){
+                    count++;
+                }else{
+                    break;
+                }
+            }
+            lst.add(new int[]{i,count});
+        }
+        Collections.sort(lst,new BruhComparator());
+        for(int i=0;i<k;i++){
+            res[i] = lst.get(i)[0];
+        }
+        return res;
+    }
 }
