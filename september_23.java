@@ -542,4 +542,28 @@ class September_23{
         }
         return res;
     }
+    ////********************************************************************************************************* */
+    //!19/9/23
+    //!Floyd's Cycle Detection
+    // Approach
+    /* 1. Initialize two pointers, tortoise and hare, at the beginning of the array.
+       2. Move tortoise one step at a time and hare two steps at a time.
+       3. If there is a duplicate number in the array, tortoise and hare will meet at some index in the array.
+       4. Then reset tortoise to the beginning of the array and move both tortoise and hare one step at a time.
+       5. tortoise and hare will meet again at the index of the duplicate number.*/
+    public int findDuplicate(int[] nums) {
+        int slow=0, fast=0;
+        do{
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+        }while(slow!=fast);
+        slow=0;
+        do{
+            slow=nums[slow];
+            fast=nums[fast];
+        }while(slow!=fast);
+        return slow;
+    }
+
+
 }
