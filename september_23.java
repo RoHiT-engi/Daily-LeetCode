@@ -564,6 +564,60 @@ class September_23{
         }while(slow!=fast);
         return slow;
     }
+    ////********************************************************************************************************* */
+    //!20/9/23
+    // Brute Force (Dp)
+    public int minOperations_Dp(int[] nums, int x) {
+         int n = nums.length;
+         int dp[][] = new int [n+1][n+1];
 
+         for(int [] arr : dp)Arrays.fill(arr,-1);
+
+         int temp = helper(nums,x,0,n-1,n,dp);
+
+         return temp == 1000000 ? -1:temp;
+     }
+     public int helper(int[] nums,int x,int i,int j,int n,int dp[][]){
+         if(x == 0)return 0;
+         if(i > j || i >= n || j < 0 || x < 0){
+             return 1000000;
+         }
+         if(dp[i][j] != -1)return dp[i][j];
+
+         int ans = 1000000;
+         ans = Math.min(ans,1+helper(nums,x-nums[i],i+1,j,n,dp));
+         ans = Math.min(ans,1+helper(nums,x-nums[j],i,j-1,n,dp));
+         return dp[i][j] = ans;
+     }
+
+    //  find by creating subarray of n-x
+    public int minOperations_SubArraySoln(int[] nums, int x) {
+        int start = 0;
+        int end = nums.length-1;
+        if(nums[start]>x && nums[end]>x){
+            return -1;
+        }
+        int sum = 0;
+        HashMap<Integer,Integer> hash = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+            hash.put(sum,i);
+        }
+        int val = 0;
+        int longest = 0;
+        sum-=x;
+        hash.put(0,0);
+        for(int i=0;i<nums.length;i++){
+            val = val + nums[i];
+            if(hash.containsKey(val-sum)){
+                if(val-sum==0){
+                    longest = Math.max(longest,i-hash.get(val-sum)+1);
+                }else{
+                    longest = Math.max(longest,i-hash.get(val-sum));
+                }
+            }
+        }
+        return longest==0?(sum==0?nums.length:-1):nums.length-longest;
+    }
 
 }
