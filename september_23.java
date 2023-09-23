@@ -1,60 +1,70 @@
 
 import java.util.*;
-class September_23{
+
+class September_23 {
     public static void main(String[] args) {
         // System.out.println();
-        System.out.println(combinationSum4(new int[] { 2,1,3 }, 35));
+        System.out.println(combinationSum4(new int[] { 2, 1, 3 }, 35));
     }
 
     //! 6/9/23
 
     public class ListNode {
-      int val;
-      ListNode next;
-      ListNode() {}
-      ListNode(int val) { this.val = val; }
-      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-   }
+        int val;
+        ListNode next;
 
-   public ListNode[] splitListToParts(ListNode head, int k) {
-       // Performance efficient not memory (remove List)
-       ListNode[] res = new ListNode[k];
-       List<ListNode> lst = new ArrayList<>();
-       ListNode temp = head;
-       while (temp != null) {
-           lst.add(temp);
-           temp = temp.next;
-       }
-       int count = lst.size();
-       if (lst.size() < k) {
-           for (int i = 0; i < k; i++) {
-               if (i < lst.size() && lst.get(i) != null) {
-                   res[i] = lst.get(i);
-                   res[i].next = null;
-               } else {
-                   res[i] = null;
-               }
-           }
-       } else {
-           temp = head;
-           res[0] = head;
-           int curr = 0;
+        ListNode() {
+        }
 
-           for (int i = 1; i < res.length; i++) {
-               int x = count / k;
-               int y = count % k;
-               if (y > 0) {
-                   y = 1;
-               }
-               lst.get(curr + x + y - 1).next = null;
-               res[i] = lst.get(curr + x + y);
-               curr = curr + x + y;
-               count = count - x - y;
-               k--;
-           }
-       }
-       return res;
-   }
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    public ListNode[] splitListToParts(ListNode head, int k) {
+        // Performance efficient not memory (remove List)
+        ListNode[] res = new ListNode[k];
+        List<ListNode> lst = new ArrayList<>();
+        ListNode temp = head;
+        while (temp != null) {
+            lst.add(temp);
+            temp = temp.next;
+        }
+        int count = lst.size();
+        if (lst.size() < k) {
+            for (int i = 0; i < k; i++) {
+                if (i < lst.size() && lst.get(i) != null) {
+                    res[i] = lst.get(i);
+                    res[i].next = null;
+                } else {
+                    res[i] = null;
+                }
+            }
+        } else {
+            temp = head;
+            res[0] = head;
+            int curr = 0;
+
+            for (int i = 1; i < res.length; i++) {
+                int x = count / k;
+                int y = count % k;
+                if (y > 0) {
+                    y = 1;
+                }
+                lst.get(curr + x + y - 1).next = null;
+                res[i] = lst.get(curr + x + y);
+                curr = curr + x + y;
+                count = count - x - y;
+                k--;
+            }
+        }
+        return res;
+    }
 
     ////********************************************************************************************************* */
     //! 7/9/23
@@ -93,7 +103,7 @@ class September_23{
         temp.next = ittr;
         return left == 1 ? prev : head;
     }
-    
+
     //? Good Approach
     public ListNode reverseBetween_goodApproach(ListNode head, int left, int right) {
         ListNode temp = new ListNode(-1);
@@ -124,38 +134,40 @@ class September_23{
         List<Integer> lst = new ArrayList<>();
         lst.add(1);
         result.add(lst);
-        if(numRows==1) {
+        if (numRows == 1) {
             return result;
+        } else {
+            return getem1(result, 2, numRows + 1);
         }
-        else{
-            return getem1(result,2,numRows+1);}
     }
-    static List<List<Integer>> getem1(List<List<Integer>> mainLst,int index,int numRows){
-        if(index == numRows){
+
+    static List<List<Integer>> getem1(List<List<Integer>> mainLst, int index, int numRows) {
+        if (index == numRows) {
             return mainLst;
         }
         List<Integer> lst = new ArrayList<>();
-        List<Integer> prevlst = mainLst.get(mainLst.size()-1);
+        List<Integer> prevlst = mainLst.get(mainLst.size() - 1);
         int counter = 0;
-        for(int i=0;i<index;i++){
-            if(i==0 || i==(index-1)){
+        for (int i = 0; i < index; i++) {
+            if (i == 0 || i == (index - 1)) {
                 lst.add(1);
-            }else{
-                int val = prevlst.get(counter)+prevlst.get(++counter);
+            } else {
+                int val = prevlst.get(counter) + prevlst.get(++counter);
                 lst.add(val);
             }
         }
         mainLst.add(lst);
-        return getem1(mainLst,index+1,numRows);
+        return getem1(mainLst, index + 1, numRows);
     }
 
     ////********************************************************************************************************* */
     //!9/9/23
     // Non DP Approach (not good for higher target)
     static int count = 0;
+
     static int combinationSum4(int[] nums, int target) {
-        for(int i=0;i<nums.length;i++){
-            getem(nums,target,0+nums[i]);
+        for (int i = 0; i < nums.length; i++) {
+            getem(nums, target, 0 + nums[i]);
         }
         return count;
     }
@@ -173,29 +185,29 @@ class September_23{
             getem(nums, target, nums[i] + sum);
         }
     }
-    
+
     // the love babbar Approach
 
     public int combinationSum4_BetterApproach(int[] nums, int target) {
-       int[] dp = new int[target+1];
-       Arrays.fill(dp,-1);
-       dp[0] = 1;
-       return getem(nums,target,dp);
+        int[] dp = new int[target + 1];
+        Arrays.fill(dp, -1);
+        dp[0] = 1;
+        return getem(nums, target, dp);
     }
 
-    public int getem(int[] nums, int target,int[] dp) {
-        if(target==0){
+    public int getem(int[] nums, int target, int[] dp) {
+        if (target == 0) {
             return 1;
         }
-        if(target<0){
+        if (target < 0) {
             return 0;
         }
-        if(dp[target]!=-1){
+        if (dp[target] != -1) {
             return dp[target];
         }
         int ans = 0;
-        for(int i:nums){
-            ans += getem(nums,target-i,dp);
+        for (int i : nums) {
+            ans += getem(nums, target - i, dp);
         }
         dp[target] = ans;
         return dp[target];
@@ -205,13 +217,13 @@ class September_23{
     //!10/9/23
     // refeered this video best soln (https://www.youtube.com/watch?v=p1tvA-eQFqk)
     public int countOrders(int n) {
-        int mod = (int) Math.pow(10,9)+7;
+        int mod = (int) Math.pow(10, 9) + 7;
         long[] dp = new long[501];
-        dp[1]=1L;
-        dp[2]=6L;
-        for(int i=3;i<=n;i++){
-            int getfirstpossiblecombo = 2*i-1;
-            dp[i] = ((dp[i-1]*(getfirstpossiblecombo+1)*getfirstpossiblecombo)/2)%mod;
+        dp[1] = 1L;
+        dp[2] = 6L;
+        for (int i = 3; i <= n; i++) {
+            int getfirstpossiblecombo = 2 * i - 1;
+            dp[i] = ((dp[i - 1] * (getfirstpossiblecombo + 1) * getfirstpossiblecombo) / 2) % mod;
         }
         return (int) dp[n];
     }
@@ -220,19 +232,19 @@ class September_23{
     //!11/9/23
     // why this is even considered as mid lvl prblm ?
     public List<List<Integer>> groupThePeople(int[] arr) {
-        HashMap<Integer,List<Integer>> hash = new HashMap<>();
+        HashMap<Integer, List<Integer>> hash = new HashMap<>();
         List<List<Integer>> res = new ArrayList<>();
-        for(int i=0;i<arr.length;i++){
-            List<Integer> lst = hash.getOrDefault(arr[i],new ArrayList<>());
-            if(arr[i]==lst.size()){
+        for (int i = 0; i < arr.length; i++) {
+            List<Integer> lst = hash.getOrDefault(arr[i], new ArrayList<>());
+            if (arr[i] == lst.size()) {
                 res.add(lst);
                 lst = new ArrayList<>();
             }
             lst.add(i);
-            hash.put(arr[i],lst);
+            hash.put(arr[i], lst);
         }
 
-        for(Integer i:hash.keySet()){
+        for (Integer i : hash.keySet()) {
             res.add(hash.get(i));
         }
         return res;
@@ -242,97 +254,101 @@ class September_23{
     //!12/9/23
     public int minDeletions(String s) {
         int max = 0;
-        HashMap<Character,Integer> hash = new HashMap<>();
-        for(int i=0;i<s.length();i++){
-            int x = hash.getOrDefault(s.charAt(i),0)+1;
-            max = Math.max(max,x);
-            hash.put(s.charAt(i),x);
+        HashMap<Character, Integer> hash = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            int x = hash.getOrDefault(s.charAt(i), 0) + 1;
+            max = Math.max(max, x);
+            hash.put(s.charAt(i), x);
         }
         int tutsum = 0;
         HashSet<Integer> set = new HashSet<>();
-        for(Character c:hash.keySet()){
-            if(set.contains(hash.get(c))){
-                int val = hash.get(c)-1;
-                while(set.contains(val)){
+        for (Character c : hash.keySet()) {
+            if (set.contains(hash.get(c))) {
+                int val = hash.get(c) - 1;
+                while (set.contains(val)) {
                     val--;
                 }
                 set.add(val);
             }
             set.add(hash.get(c));
         }
-        for(Integer i:set){
-            if(i>0){
-            tutsum+=i;}
+        for (Integer i : set) {
+            if (i > 0) {
+                tutsum += i;
+            }
         }
         // System.out.println(hash+" "+s.length()+" "+tutsum+" "+set);
-        return s.length()-tutsum;
+        return s.length() - tutsum;
     }
+
     ////********************************************************************************************************* */
     //!13/9/23
     // did greedy approach but poor implementation 
     // https://www.youtube.com/watch?v=h6_lIwZYHQw (good approach)
     public int candy(int[] ratings) {
-        if(ratings.length==1){
+        if (ratings.length == 1) {
             return 1;
         }
         int[] resL = new int[ratings.length];
         int[] resR = new int[ratings.length];
-        Arrays.fill(resL,1);
-        Arrays.fill(resR,1);
+        Arrays.fill(resL, 1);
+        Arrays.fill(resR, 1);
 
-        for(int i=1;i<ratings.length;i++){
-            if(ratings[i]>ratings[i-1]){
-                resL[i]=resL[i-1]+1;
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                resL[i] = resL[i - 1] + 1;
             }
         }
-         for(int i=ratings.length-1;i>=1;i--){
-            if(ratings[i]<ratings[i-1]){
-                resR[i-1]=resR[i]+1;
+        for (int i = ratings.length - 1; i >= 1; i--) {
+            if (ratings[i] < ratings[i - 1]) {
+                resR[i - 1] = resR[i] + 1;
             }
         }
-        int sum =0;
-        for(int i=0;i<ratings.length;i++){
-            sum+=Math.max(resR[i],resL[i]);
+        int sum = 0;
+        for (int i = 0; i < ratings.length; i++) {
+            sum += Math.max(resR[i], resL[i]);
             // System.out.println(Math.max(resR[i],resL[i]));
         }
         return sum;
     }
+
     ////********************************************************************************************************* */
     //!14/9/23
     // Note: Choosing proper dS is imp 
     // Attempted without Stack but too much complex
     public List<String> findItinerary(List<List<String>> tickets) {
-        HashMap<String,PriorityQueue<String>> hash = new HashMap<>();
-        for(List<String> i:tickets){
-            PriorityQueue<String> lst = hash.getOrDefault(i.get(0),new PriorityQueue<String>());
+        HashMap<String, PriorityQueue<String>> hash = new HashMap<>();
+        for (List<String> i : tickets) {
+            PriorityQueue<String> lst = hash.getOrDefault(i.get(0), new PriorityQueue<String>());
             lst.add(i.get(1));
-            hash.put(i.get(0),lst);
+            hash.put(i.get(0), lst);
         }
         List<String> res = new ArrayList<>();
         Stack<String> stk = new Stack<>();
         stk.push("JFK");
         // System.out.println(hash);
-        while(!stk.empty()){
+        while (!stk.empty()) {
             // System.out.println(stk+" stack");
             // System.out.println(hash);
             String val = stk.peek();
-            if(hash.containsKey(stk.peek())){
+            if (hash.containsKey(stk.peek())) {
                 PriorityQueue<String> maps = hash.get(stk.peek());
                 // System.out.println(maps.isEmpty()+" "+maps);
-                if(maps.isEmpty()){
+                if (maps.isEmpty()) {
                     res.add(stk.pop());
                     continue;
                 }
                 // System.out.println(val);
                 stk.push(maps.poll());
-                hash.put(val,maps);
-            }else{
+                hash.put(val, maps);
+            } else {
                 res.add(stk.pop());
             }
         }
         Collections.reverse(res);
         return res;
     }
+
     ////********************************************************************************************************* */
     //!15/9/23
     // prims Algo to find minimum spanning tree in graph
@@ -367,6 +383,7 @@ class September_23{
         }
         return count;
     }
+
     ////********************************************************************************************************* */
     //!16/9/23
     // using Dijkstra's Algorithm (hint:- min efforts path/ lesscost path / best effi path )
@@ -411,12 +428,12 @@ class September_23{
         }
         return temp[arr.length - 1][arr[0].length - 1];
     }
-    
+
     // Using Binary Search (best soln)
-    private boolean[][] visited;  // Visited cells tracker
-    private int[] directions_x = {0, 1, -1, 0};  // Changes in x coordinate for four directions
-    private int[] directions_y = {1, 0, 0, -1};  // Changes in y coordinate for four directions
-    private int numRows, numCols;  // Number of rows and columns in the matrix
+    private boolean[][] visited; // Visited cells tracker
+    private int[] directions_x = { 0, 1, -1, 0 }; // Changes in x coordinate for four directions
+    private int[] directions_y = { 1, 0, 0, -1 }; // Changes in y coordinate for four directions
+    private int numRows, numCols; // Number of rows and columns in the matrix
 
     private void dfs_binarySearch(int x, int y, int limitEffort, int[][] heights) {
         if (visited[x][y])
@@ -504,44 +521,43 @@ class September_23{
 
         return -1;
     }
-    
+
     ////********************************************************************************************************* */
     //!18/9/23
     class BruhComparator implements Comparator<int[]> {
-    // override the compare() method
-    public int compare(int[] l1, int[] l2)
-    {
-        if (l1[1] == l2[1]) {
-            return 0;
-        }
-        else if (l1[1] > l2[1]) {
-            return 1;
-        }
-        else {
-            return -1;
+        // override the compare() method
+        public int compare(int[] l1, int[] l2) {
+            if (l1[1] == l2[1]) {
+                return 0;
+            } else if (l1[1] > l2[1]) {
+                return 1;
+            } else {
+                return -1;
+            }
         }
     }
-    }
+
     public int[] kWeakestRows(int[][] mat, int k) {
         ArrayList<int[]> lst = new ArrayList<>();
-        int[] res= new int[k];
-        for(int i=0;i<mat.length;i++){
+        int[] res = new int[k];
+        for (int i = 0; i < mat.length; i++) {
             int count = 0;
-            for(int j:mat[i]){
-                if(j==1){
+            for (int j : mat[i]) {
+                if (j == 1) {
                     count++;
-                }else{
+                } else {
                     break;
                 }
             }
-            lst.add(new int[]{i,count});
+            lst.add(new int[] { i, count });
         }
-        Collections.sort(lst,new BruhComparator());
-        for(int i=0;i<k;i++){
+        Collections.sort(lst, new BruhComparator());
+        for (int i = 0; i < k; i++) {
             res[i] = lst.get(i)[0];
         }
         return res;
     }
+
     ////********************************************************************************************************* */
     //!19/9/23
     //!Floyd's Cycle Detection
@@ -552,72 +568,204 @@ class September_23{
        4. Then reset tortoise to the beginning of the array and move both tortoise and hare one step at a time.
        5. tortoise and hare will meet again at the index of the duplicate number.*/
     public int findDuplicate(int[] nums) {
-        int slow=0, fast=0;
-        do{
-            slow=nums[slow];
-            fast=nums[nums[fast]];
-        }while(slow!=fast);
-        slow=0;
-        do{
-            slow=nums[slow];
-            fast=nums[fast];
-        }while(slow!=fast);
+        int slow = 0, fast = 0;
+        do {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);
+        slow = 0;
+        do {
+            slow = nums[slow];
+            fast = nums[fast];
+        } while (slow != fast);
         return slow;
     }
+
     ////********************************************************************************************************* */
     //!20/9/23
+    // TODO
     // Brute Force (Dp)
     public int minOperations_Dp(int[] nums, int x) {
-         int n = nums.length;
-         int dp[][] = new int [n+1][n+1];
+        int n = nums.length;
+        int dp[][] = new int[n + 1][n + 1];
 
-         for(int [] arr : dp)Arrays.fill(arr,-1);
+        for (int[] arr : dp)
+            Arrays.fill(arr, -1);
 
-         int temp = helper(nums,x,0,n-1,n,dp);
+        int temp = helper(nums, x, 0, n - 1, n, dp);
 
-         return temp == 1000000 ? -1:temp;
-     }
-     public int helper(int[] nums,int x,int i,int j,int n,int dp[][]){
-         if(x == 0)return 0;
-         if(i > j || i >= n || j < 0 || x < 0){
-             return 1000000;
-         }
-         if(dp[i][j] != -1)return dp[i][j];
+        return temp == 1000000 ? -1 : temp;
+    }
 
-         int ans = 1000000;
-         ans = Math.min(ans,1+helper(nums,x-nums[i],i+1,j,n,dp));
-         ans = Math.min(ans,1+helper(nums,x-nums[j],i,j-1,n,dp));
-         return dp[i][j] = ans;
-     }
+    public int helper(int[] nums, int x, int i, int j, int n, int dp[][]) {
+        if (x == 0)
+            return 0;
+        if (i > j || i >= n || j < 0 || x < 0) {
+            return 1000000;
+        }
+        if (dp[i][j] != -1)
+            return dp[i][j];
+
+        int ans = 1000000;
+        ans = Math.min(ans, 1 + helper(nums, x - nums[i], i + 1, j, n, dp));
+        ans = Math.min(ans, 1 + helper(nums, x - nums[j], i, j - 1, n, dp));
+        return dp[i][j] = ans;
+    }
 
     //  find by creating subarray of n-x
     public int minOperations_SubArraySoln(int[] nums, int x) {
         int start = 0;
-        int end = nums.length-1;
-        if(nums[start]>x && nums[end]>x){
+        int end = nums.length - 1;
+        if (nums[start] > x && nums[end] > x) {
             return -1;
         }
         int sum = 0;
-        HashMap<Integer,Integer> hash = new HashMap<>();
-        for(int i=0;i<nums.length;i++){
-            sum+=nums[i];
-            hash.put(sum,i);
+        HashMap<Integer, Integer> hash = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            hash.put(sum, i);
         }
         int val = 0;
         int longest = 0;
-        sum-=x;
-        hash.put(0,0);
-        for(int i=0;i<nums.length;i++){
+        sum -= x;
+        hash.put(0, 0);
+        for (int i = 0; i < nums.length; i++) {
             val = val + nums[i];
-            if(hash.containsKey(val-sum)){
-                if(val-sum==0){
-                    longest = Math.max(longest,i-hash.get(val-sum)+1);
-                }else{
-                    longest = Math.max(longest,i-hash.get(val-sum));
+            if (hash.containsKey(val - sum)) {
+                if (val - sum == 0) {
+                    longest = Math.max(longest, i - hash.get(val - sum) + 1);
+                } else {
+                    longest = Math.max(longest, i - hash.get(val - sum));
                 }
             }
         }
-        return longest==0?(sum==0?nums.length:-1):nums.length-longest;
+        return longest == 0 ? (sum == 0 ? nums.length : -1) : nums.length - longest;
+    }
+
+    ////********************************************************************************************************* */
+    //!21/9/23
+    // TODO: 
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length, n2 = nums2.length;
+        if (n1 > n2)
+            return findMedianSortedArrays(nums2, nums1);
+        
+        int n = n1 + n2;
+        int left = (n1 + n2 + 1) / 2; 
+        int low = 0, high = n1;
+        
+        while (low <= high) {
+            int mid1 = (low + high) >> 1; 
+            int mid2 = left - mid1; 
+            
+            int l1 = Integer.MIN_VALUE, l2 = Integer.MIN_VALUE, r1 = Integer.MAX_VALUE, r2 = Integer.MAX_VALUE;
+            
+            if (mid1 < n1)
+                r1 = nums1[mid1];
+            if (mid2 < n2)
+                r2 = nums2[mid2];
+            if (mid1 - 1 >= 0)
+                l1 = nums1[mid1 - 1];
+            if (mid2 - 1 >= 0)
+                l2 = nums2[mid2 - 1];
+            
+            if (l1 <= r2 && l2 <= r1) {
+                if (n % 2 == 1)
+                    return Math.max(l1, l2);
+                else
+                    return ((double)(Math.max(l1, l2) + Math.min(r1, r2))) / 2.0;
+            }
+            else if (l1 > r2) {
+                high = mid1 - 1;
+            }
+            else {
+                low = mid1 + 1;
+            }
+        }
+        
+        return 0;
+
+    }
+
+    
+    ////********************************************************************************************************* */
+    //!22/9/23
+
+    public boolean isSubsequence(String s, String t) {
+        int pt = 0;
+        for (int i = 0; i < t.length(); i++) {
+            if (pt == s.length()) {
+                return true;
+            }
+            if (s.charAt(pt) == t.charAt(i)) {
+                pt++;
+            }
+        }
+        return pt == s.length() ? true : false;
+    }
+    
+    
+    ////********************************************************************************************************* */
+    //!23/9/23 
+    // TODO: Striver dp vids try (37 - 42)
+    //? Good Soln
+    public int longestStrChain_Dp(String[] words) {
+        // HashSet<String> hash = new HashSet<>();
+        Arrays.sort(words,Comparator.comparing(s->s.length()));
+        int dp[] = new int[words.length];
+        Arrays.fill(dp,1);
+        int max = 0;
+        for(int i=0;i<words.length;i++){
+            for(int j=0;j<i;j++){
+                if(compare(words[i],words[j])){
+                    // System.out.println(i+" "+j);
+                    dp[i] = Math.max(dp[i], 1 + dp[j]);
+                }
+            }
+            max = Math.max(dp[i],max);
+        }
+        return max;
+    }
+    static boolean compare(String str1,String str2){
+        if(Math.abs(str1.length()-str2.length())!=1) return false;
+        if(str1.length()>str2.length()){
+            int i=0;
+            int j=0;
+            while(i<str1.length() && j<str2.length()){
+                if(str1.charAt(i)==str2.charAt(j) ){
+                    i++;
+                    j++;
+                }
+                else{
+                    i++;
+                }
+            }
+
+            if((i==str1.length() && j==str2.length()) || (i+1 == str1.length() && j== str2.length())){ 
+                return true;
+            }
+            return false;
+        }else{
+            return false;
+        }
+    }
+    // Kinda Brute Force
+    public int longestStrChain_brute(String[] words) {
+        // HashSet<String> hash = new HashSet<>();
+        Arrays.sort(words,Comparator.comparing(s->s.length()));
+        HashMap<String,Integer> dp = new HashMap<>();
+        int ans = 0;
+        for(String word:words)
+        {   
+            for(int i=0;i<word.length();i++)
+            {
+                String predecessor = word.substring(0,i) + word.substring(i+1);
+                int val =  Math.max(dp.getOrDefault(word,0), dp.getOrDefault(predecessor,0)+1);
+                dp.put(word, val); 
+            }
+            ans = Math.max(ans, dp.get(word)); 
+        }   
+        return ans;  
     }
 
 }
