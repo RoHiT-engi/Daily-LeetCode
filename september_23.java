@@ -767,5 +767,20 @@ class September_23 {
         }   
         return ans;  
     }
+    ///********************************************************************************************************* */
+    //!24/9/23 
+    public double champagneTower(int poured, int ro, int query_glass) {
+        double[][] dp = new double[101][101];
+        dp[0][0] = poured;
+        for(int i=0;i<ro;i++){
+            for(int j=0;j<i+1;j++){
+                double rem = Math.max(dp[i][j]-1.0,0);
+                dp[i+1][j] +=rem/2.0;
+                dp[i+1][j+1] +=rem/2.0;
+            }
+        }
+        // System.out.println(Arrays.deepToString(dp));
+        return Math.min(dp[ro][query_glass],1.0);
+    }
 
 }
