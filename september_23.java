@@ -806,31 +806,62 @@ class September_23 {
     //!26/9/23 
     // https://www.youtube.com/watch?v=ht-zr2xlfdk
     public String removeDuplicateLetters(String s) {
-        int [] lastIndex=new int[26];
-        for(int i=0;i<s.length();i++)
-            lastIndex[s.charAt(i)-'a'] = i;
-            boolean [] seen=new boolean[26];
-            Stack<Integer> st=new Stack<>();
-        
-        for(int i=0;i<s.length();i++)
-        {
-            int c=s.charAt(i) - 'a';
-            
-            if(seen[c]) continue;
-            
-            while(!st.isEmpty() && st.peek()>c && i < lastIndex[st.peek()])
-            {
+        int[] lastIndex = new int[26];
+        for (int i = 0; i < s.length(); i++)
+            lastIndex[s.charAt(i) - 'a'] = i;
+        boolean[] seen = new boolean[26];
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            int c = s.charAt(i) - 'a';
+
+            if (seen[c])
+                continue;
+
+            while (!st.isEmpty() && st.peek() > c && i < lastIndex[st.peek()]) {
                 seen[st.pop()] = false;
             }
             st.push(c);
-            seen[c]=true;
+            seen[c] = true;
         }
-        StringBuilder sb=new StringBuilder();
-        
-        while(!st.isEmpty())
-        {
+        StringBuilder sb = new StringBuilder();
+
+        while (!st.isEmpty()) {
             sb.append((char) (st.pop() + 'a'));
         }
         return sb.reverse().toString();
     }
+    
+    ///********************************************************************************************************* */
+    //!27/9/23
+    public String decodeAtIndex(String inputString, int k) {
+        long decodedLength = 0;
+
+        for (char character : inputString.toCharArray()) {
+            if (Character.isDigit(character)) {
+                decodedLength *= (character - '0');
+            } else {
+                decodedLength++;
+            }
+        }
+
+        for (int i = inputString.length() - 1; i >= 0; i--) {
+            char currentChar = inputString.charAt(i);
+
+            if (Character.isDigit(currentChar)) {
+                decodedLength /= (currentChar - '0');
+                k %= decodedLength;
+            } else {
+                if (k == 0 || decodedLength == k) {
+                    return String.valueOf(currentChar);
+                }
+                decodedLength--;
+            }
+        }
+
+        return "";
+    }
+    ///********************************************************************************************************* */
+    //!28/9/23
+    
 }
