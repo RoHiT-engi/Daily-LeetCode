@@ -752,36 +752,38 @@ class September_23 {
     // Kinda Brute Force
     public int longestStrChain_brute(String[] words) {
         // HashSet<String> hash = new HashSet<>();
-        Arrays.sort(words,Comparator.comparing(s->s.length()));
-        HashMap<String,Integer> dp = new HashMap<>();
+        Arrays.sort(words, Comparator.comparing(s -> s.length()));
+        HashMap<String, Integer> dp = new HashMap<>();
         int ans = 0;
-        for(String word:words)
-        {   
-            for(int i=0;i<word.length();i++)
-            {
-                String predecessor = word.substring(0,i) + word.substring(i+1);
-                int val =  Math.max(dp.getOrDefault(word,0), dp.getOrDefault(predecessor,0)+1);
-                dp.put(word, val); 
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                String predecessor = word.substring(0, i) + word.substring(i + 1);
+                int val = Math.max(dp.getOrDefault(word, 0), dp.getOrDefault(predecessor, 0) + 1);
+                dp.put(word, val);
             }
-            ans = Math.max(ans, dp.get(word)); 
-        }   
-        return ans;  
+            ans = Math.max(ans, dp.get(word));
+        }
+        return ans;
     }
+
+    
     ///********************************************************************************************************* */
     //!24/9/23 
     public double champagneTower(int poured, int ro, int query_glass) {
         double[][] dp = new double[101][101];
         dp[0][0] = poured;
-        for(int i=0;i<ro;i++){
-            for(int j=0;j<i+1;j++){
-                double rem = Math.max(dp[i][j]-1.0,0);
-                dp[i+1][j] +=rem/2.0;
-                dp[i+1][j+1] +=rem/2.0;
+        for (int i = 0; i < ro; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                double rem = Math.max(dp[i][j] - 1.0, 0);
+                dp[i + 1][j] += rem / 2.0;
+                dp[i + 1][j + 1] += rem / 2.0;
             }
         }
         // System.out.println(Arrays.deepToString(dp));
-        return Math.min(dp[ro][query_glass],1.0);
+        return Math.min(dp[ro][query_glass], 1.0);
     }
+
+    
     ///********************************************************************************************************* */
     //!25/9/23 
     public char findTheDifference(String s, String t) {
@@ -799,5 +801,36 @@ class September_23 {
             if(count[i]>0) return (char)('a'+i);
         }
         return 'a';
+    }
+    ///********************************************************************************************************* */
+    //!26/9/23 
+    // https://www.youtube.com/watch?v=ht-zr2xlfdk
+    public String removeDuplicateLetters(String s) {
+        int [] lastIndex=new int[26];
+        for(int i=0;i<s.length();i++)
+            lastIndex[s.charAt(i)-'a'] = i;
+            boolean [] seen=new boolean[26];
+            Stack<Integer> st=new Stack<>();
+        
+        for(int i=0;i<s.length();i++)
+        {
+            int c=s.charAt(i) - 'a';
+            
+            if(seen[c]) continue;
+            
+            while(!st.isEmpty() && st.peek()>c && i < lastIndex[st.peek()])
+            {
+                seen[st.pop()] = false;
+            }
+            st.push(c);
+            seen[c]=true;
+        }
+        StringBuilder sb=new StringBuilder();
+        
+        while(!st.isEmpty())
+        {
+            sb.append((char) (st.pop() + 'a'));
+        }
+        return sb.reverse().toString();
     }
 }
