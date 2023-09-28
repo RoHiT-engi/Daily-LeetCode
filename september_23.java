@@ -863,5 +863,19 @@ class September_23 {
     }
     ///********************************************************************************************************* */
     //!28/9/23
-    
+    public int[] sortArrayByParity(int[] nums) {
+        int front = 0;
+        int end = nums.length-1;
+        while(front<end){
+            if(nums[front]%2!=0){
+                int temp = nums[front];
+                nums[front] = nums[end];
+                nums[end] = temp;
+                end--;
+                continue;
+            }
+            front++;
+        }
+        return nums;
+    }
 }
