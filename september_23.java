@@ -865,9 +865,9 @@ class September_23 {
     //!28/9/23
     public int[] sortArrayByParity(int[] nums) {
         int front = 0;
-        int end = nums.length-1;
-        while(front<end){
-            if(nums[front]%2!=0){
+        int end = nums.length - 1;
+        while (front < end) {
+            if (nums[front] % 2 != 0) {
                 int temp = nums[front];
                 nums[front] = nums[end];
                 nums[end] = temp;
@@ -878,4 +878,56 @@ class September_23 {
         }
         return nums;
     }
+
+    ///********************************************************************************************************* */
+    //!29/9/23 
+    public boolean isMonotonic(int[] nums) {
+        int min = 0;
+        int max = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] == nums[i]) {
+                max++;
+                min++;
+                continue;
+            }
+            if (nums[i - 1] > nums[i]) {
+                max++;
+            } else {
+                min++;
+            }
+        }
+        // System.out.println(max+" "+min);
+        return ((max + 1 == nums.length) || (min + 1 == nums.length)) ? true : false;
+    }
+    
+    // good approach
+    public boolean isMonotonic_good(int[] nums) {
+        int n = nums.length;
+        
+        if (n <= 1) {
+            return true; // A single element array is considered monotonic.
+        }
+        
+        int direction = 0; // 0: undetermined, 1: increasing, -1: decreasing
+        
+        for (int i = 1; i < n; i++) {
+            int diff = nums[i] - nums[i - 1];
+            
+            if (diff > 0) {
+                if (direction == -1) {
+                    return false; // Not monotonic if it was decreasing before.
+                }
+                direction = 1;
+            } else if (diff < 0) {
+                if (direction == 1) {
+                    return false; // Not monotonic if it was increasing before.
+                }
+                direction = -1;
+            }
+            // If diff == 0, continue to the next element.
+        }
+        
+        return true;
+    }
+
 }
